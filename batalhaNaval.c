@@ -33,7 +33,7 @@ int main() {
     int colunaCone = 5;
 
     int linhaCruz = 0;
-    int colunaCruz = 5;
+    int colunaCruz = 4;
 
     int linhaOctaedro = 4;
     int colunaOctaedro = 0;
@@ -174,6 +174,8 @@ int main() {
                 int col = colunaCone + j;
                 if(tabuleiro[lin][col] == 0)
                     tabuleiro[lin][col] = 1;
+                else if(tabuleiro[lin][col] == 3)
+                    tabuleiro[lin][col] = 4;
             }
         }
     }
@@ -186,6 +188,8 @@ int main() {
                 int col = colunaCruz + j;
                 if(tabuleiro[lin][col] == 0)
                     tabuleiro[lin][col] = 1;
+                else if(tabuleiro[lin][col] == 3)
+                    tabuleiro[lin][col] = 4;
             }
         }
     }
@@ -198,6 +202,8 @@ int main() {
                 int col = colunaOctaedro + j;
                 if(tabuleiro[lin][col] == 0)
                     tabuleiro[lin][col] = 1;
+                else if(tabuleiro[lin][col] == 3)
+                    tabuleiro[lin][col] = 4;
             }
         }
     }
@@ -220,7 +226,7 @@ int main() {
         }
     }
 
-    printf("\n\nLegenda: 0 = agua | 3 = navio | 1 = Areas afetadas pelas habilidades\n");
+    printf("\n\nLegenda: 0 = agua | 3 = navio | 1 = Areas afetadas por hab. | 4 Barcos afetados por hab.\n");
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
