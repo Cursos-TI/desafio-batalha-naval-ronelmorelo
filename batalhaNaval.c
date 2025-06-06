@@ -10,6 +10,75 @@ int main() {
     // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
     // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
 
+    int primeiroNavio[3] = {3, 3, 3}; // Navio Horizontal
+    int segundoNavio[3] = {3, 3, 3}; // Navio Vertical
+
+    int linhaPrimeiroNavio = 2;
+    int colunaPrimeiroNavio = 4;
+
+    int linhaSegundoNavio = 6;
+    int colunaSegundoNavio = 1;
+
+    // Flags de validacao dentro do tabuleiro
+    int primeiroNavioDentro, segundoNavioDentro;
+
+    char linha[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+
+    // Criação do Tabuleiro
+    int tabuleiro[10][10];
+
+    // Preenchendo todas as posições com 0
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            tabuleiro[i][j] = 0;
+        }
+    }
+
+    primeiroNavioDentro = colunaPrimeiroNavio + 3 <= 10;
+    segundoNavioDentro = linhaSegundoNavio + 3 <= 10;
+
+    // Garantindo que os navios cabem no tabuleiro
+    if (!primeiroNavioDentro || !segundoNavioDentro) {
+        printf("Erro: Navio fora dos limites do tabuleiro\n");
+        return 1; // Encerra o programa
+    }
+
+    // Posiciona o primeiro navio horizontalmente
+    for(int i = 0; i < 3; i++){
+        tabuleiro[linhaPrimeiroNavio][colunaPrimeiroNavio + i] = primeiroNavio[i];
+    }
+
+    // Posiciona o segundo navio verticalmente, e verifica se se sobrepoe com o primeiro navio
+    for(int i = 0; i < 3; i++){
+        if(tabuleiro[linhaSegundoNavio + i][colunaSegundoNavio] == 0){
+            tabuleiro[linhaSegundoNavio + i][colunaSegundoNavio] = segundoNavio[i];
+        } else{
+            printf("Erro: Navios estao sobrepostos na posicao [%d][%d]\n", linhaSegundoNavio + i, colunaSegundoNavio);
+            return 1; // Encerra o programa
+        }
+    }
+
+
+    // Imprimindo o titulo
+    printf("TABULEIRO BATALHA NAVAL \n");
+    printf("   ");
+    for(int i = 0; i < 10; i++){
+        printf("%c ", linha[i]); // Imprime os números das colunas
+    }
+
+    // Imprimindo o valor da cada linha com seu conteudo respectivo
+    for(int i = 0; i < 10; i++){
+        printf("\n%d ", i + 1);
+        for(int j = 0; j < 10; j++){
+            if(i == 9 && j == 0)
+                printf("%d", tabuleiro[i][j]);
+            else
+                printf(" %d", tabuleiro[i][j]);
+        }
+    }
+
+    printf("\n\nLegenda: 0 = agua | 3 = navio\n\n");
+
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
     // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
