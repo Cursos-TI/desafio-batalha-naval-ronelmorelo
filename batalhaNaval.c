@@ -12,6 +12,8 @@ int main() {
 
     int primeiroNavio[3] = {3, 3, 3}; // Navio Horizontal
     int segundoNavio[3] = {3, 3, 3}; // Navio Vertical
+    int terceiroNavio[3] = {3, 3, 3}; // Navio Diagonal 
+    int quartoNavio[3] = {3, 3, 3}; // Navio Diagonal 
 
     int linhaPrimeiroNavio = 2;
     int colunaPrimeiroNavio = 4;
@@ -19,8 +21,14 @@ int main() {
     int linhaSegundoNavio = 6;
     int colunaSegundoNavio = 1;
 
+    int linhaTerceiroNavio = 0;
+    int colunaTerceiroNavio = 0;
+
+    int linhaQuartoNavio = 6;
+    int colunaQuartoNavio = 9;
+
     // Flags de validacao dentro do tabuleiro
-    int primeiroNavioDentro, segundoNavioDentro;
+    int primeiroNavioDentro, segundoNavioDentro, terceiroNavioDentro, quartoNavioDentro;
 
     char linha[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
@@ -36,10 +44,12 @@ int main() {
 
     primeiroNavioDentro = colunaPrimeiroNavio + 3 <= 10;
     segundoNavioDentro = linhaSegundoNavio + 3 <= 10;
+    terceiroNavioDentro = linhaTerceiroNavio + 3 <= 10 && colunaTerceiroNavio + 3 <= 10;
+    quartoNavioDentro = linhaQuartoNavio + 3 <= 10 && colunaQuartoNavio - 2 >= 0;
 
     // Garantindo que os navios cabem no tabuleiro
-    if (!primeiroNavioDentro || !segundoNavioDentro) {
-        printf("Erro: Navio fora dos limites do tabuleiro\n");
+    if (!primeiroNavioDentro || !segundoNavioDentro || !terceiroNavioDentro || !quartoNavioDentro) {
+        printf("Erro: Um ou mais navios estao fora dos limites do tabuleiro\n");
         return 1; // Encerra o programa
     }
 
@@ -54,10 +64,29 @@ int main() {
             tabuleiro[linhaSegundoNavio + i][colunaSegundoNavio] = segundoNavio[i];
         } else{
             printf("Erro: Navios estao sobrepostos na posicao [%d][%d]\n", linhaSegundoNavio + i, colunaSegundoNavio);
-            return 1; // Encerra o programa
+            return 1;
         }
     }
 
+    // Posiciona o terceiro navio na diagonal (linha e coluna aumentam)
+    for(int i = 0; i < 3; i++){
+        if(tabuleiro[linhaTerceiroNavio + i][colunaTerceiroNavio + i] == 0){
+            tabuleiro[linhaTerceiroNavio + i][colunaTerceiroNavio + i] = terceiroNavio[i];
+        } else {
+            printf("Erro: Navios estao sobrepostos na posicao [%d][%d]\n", linhaTerceiroNavio + i, colunaTerceiroNavio + i);
+            return 1;
+        }
+    }
+
+    // Posiciona o quarto navio na diagonal (linha aumenta e coluna diminui)
+    for(int i = 0; i < 3; i++){
+        if(tabuleiro[linhaQuartoNavio + i][colunaQuartoNavio - i] == 0){
+            tabuleiro[linhaQuartoNavio + i][colunaQuartoNavio - i] = quartoNavio[i];
+        } else {
+            printf("Erro: Navios estao sobrepostos na posicao [%d][%d]\n", linhaQuartoNavio + i, colunaQuartoNavio - i);
+            return 1;
+        }
+    }
 
     // Imprimindo o titulo
     printf("TABULEIRO BATALHA NAVAL \n");
@@ -77,7 +106,7 @@ int main() {
         }
     }
 
-    printf("\n\nLegenda: 0 = agua | 3 = navio\n\n");
+    printf("\n\nLegenda: 0 = agua | 3 = navio\n");
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
