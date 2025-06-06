@@ -15,6 +15,7 @@ int main() {
     int terceiroNavio[3] = {3, 3, 3}; // Navio Diagonal 
     int quartoNavio[3] = {3, 3, 3}; // Navio Diagonal 
 
+    // Coordenadas dos navios
     int linhaPrimeiroNavio = 2;
     int colunaPrimeiroNavio = 4;
 
@@ -27,15 +28,82 @@ int main() {
     int linhaQuartoNavio = 6;
     int colunaQuartoNavio = 9;
 
+    // Coordenadas das habilidades
+    int linhaCone = 5;
+    int colunaCone = 5;
+
+    int linhaCruz = 0;
+    int colunaCruz = 5;
+
+    int linhaOctaedro = 4;
+    int colunaOctaedro = 0;
+
     // Flags de validacao dentro do tabuleiro
     int primeiroNavioDentro, segundoNavioDentro, terceiroNavioDentro, quartoNavioDentro;
+    int coneDentro, cruzDentro, octaedroDentro;
 
     char linha[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
     // Criação do Tabuleiro
     int tabuleiro[10][10];
 
-    // Preenchendo todas as posições com 0
+    // Criação das matrizes de habilidade
+    int cone[3][5];
+    int cruz[3][5];
+    int octaedro[3][5];
+
+    // Preenchimento das matrizes de habilidade
+    // Cone
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 5; j++){
+            if(i == 0){
+                if(j !=2 )
+                    cone[i][j] = 0;
+                else
+                    cone[i][j] = 1;
+            }else if(i == 1){
+                if(j != 0 && j != 4)
+                    cone[i][j] = 1;
+                else
+                    cone[i][j] = 0;
+            }else{
+                cone[i][j] = 1;
+            }
+        }
+    }
+
+    // Cruz
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 5; j++){
+            if(i == 0 || i == 2){
+                if(j != 2)
+                    cruz[i][j] = 0;
+                else
+                    cruz[i][j] = 1;
+            }else if(i == 1){
+                cruz[i][j] = 1;
+            }
+        }
+    }
+
+    // Octaedro
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 5; j++){
+            if(i == 0 || i == 2){
+                if(j != 2)
+                    octaedro[i][j] = 0;
+                else
+                    octaedro[i][j] = 1;
+            }else{
+                if(j != 0 && j != 4)
+                    octaedro[i][j] = 1;
+                else
+                    octaedro[i][j] = 0;
+            }
+        }
+    }
+
+    // Preenchendo todas as posições do tabuleiro com 0
     for(int i = 0; i < 10; i++){
         for(int j = 0; j < 10; j++){
             tabuleiro[i][j] = 0;
@@ -46,6 +114,16 @@ int main() {
     segundoNavioDentro = linhaSegundoNavio + 3 <= 10;
     terceiroNavioDentro = linhaTerceiroNavio + 3 <= 10 && colunaTerceiroNavio + 3 <= 10;
     quartoNavioDentro = linhaQuartoNavio + 3 <= 10 && colunaQuartoNavio - 2 >= 0;
+
+    coneDentro = linhaCone + 3 <= 10 && colunaCone + 5 <= 10;
+    cruzDentro = linhaCruz + 3 <= 10 && colunaCruz + 5 <= 10;
+    octaedroDentro = linhaOctaedro + 3 <= 10 && colunaOctaedro + 5 <= 10;
+
+    // Garantindo que as habilidades cabem no tabuleiro
+    if (!coneDentro || !cruzDentro || !octaedroDentro) {
+        printf("\nErro: Uma ou mais habilidades estao fora dos limites do tabuleiro\n");
+        return 1;
+    }
 
     // Garantindo que os navios cabem no tabuleiro
     if (!primeiroNavioDentro || !segundoNavioDentro || !terceiroNavioDentro || !quartoNavioDentro) {
@@ -88,6 +166,42 @@ int main() {
         }
     }
 
+    // Posicionando habilidade CONE no tabuleiro
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 5; j++){
+            if(cone[i][j] == 1){
+                int lin = linhaCone + i;
+                int col = colunaCone + j;
+                if(tabuleiro[lin][col] == 0)
+                    tabuleiro[lin][col] = 1;
+            }
+        }
+    }
+
+    // Posicionando habilidade CRUZ no tabuleiro
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 5; j++){
+            if(cruz[i][j] == 1){
+                int lin = linhaCruz + i;
+                int col = colunaCruz + j;
+                if(tabuleiro[lin][col] == 0)
+                    tabuleiro[lin][col] = 1;
+            }
+        }
+    }
+
+    // Posicionando habilidade OCTAEDRO no tabuleiro
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 5; j++){
+            if(octaedro[i][j] == 1){
+                int lin = linhaOctaedro + i;
+                int col = colunaOctaedro + j;
+                if(tabuleiro[lin][col] == 0)
+                    tabuleiro[lin][col] = 1;
+            }
+        }
+    }
+
     // Imprimindo o titulo
     printf("TABULEIRO BATALHA NAVAL \n");
     printf("   ");
@@ -106,7 +220,7 @@ int main() {
         }
     }
 
-    printf("\n\nLegenda: 0 = agua | 3 = navio\n");
+    printf("\n\nLegenda: 0 = agua | 3 = navio | 1 = Areas afetadas pelas habilidades\n");
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
